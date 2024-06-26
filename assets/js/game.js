@@ -1,6 +1,6 @@
 var playerName = window.prompt("What's your robot name?");
 var playerHealth = 100;
-var playerAttack = 10;
+var playerAttack = 60;
 var playerMoney = 10;
 
 var enemyName = ["Roberto", "Amy Android", "Robo Trumble"];
@@ -27,7 +27,8 @@ var fight = function(enemyName) {
                 }
         }
 
-        enemyHealth = enemyHealth - playerAttack;
+        var damage = randomNumber(playerAttack - 3, playerAttack);
+        enemyHealth = Math.max(0, enemyHealth - damage)
         console.log(playerName + " attacked " + enemyName + "." + enemyName + " now has " + enemyHealth + " health remaining.");
         
             // Check enemy health
@@ -41,7 +42,8 @@ var fight = function(enemyName) {
             }
 
         // Enemy attack
-        playerHealth = playerHealth - enemyAttack;
+        var damage = randomNumber(enemyAttack -3, enemyAttack);
+        playerHealth = Math.max(0, playerHealth - damage);
         console.log(enemyName + " attacked " + playerName + "." + playerName + " now has " + playerHealth + " health remaining.");
         
             // Check player health
@@ -58,17 +60,18 @@ var fight = function(enemyName) {
 var startGame = function() {
     // reset player stats before the first round
     playerHealth = 100;
-    playerAttack = 10;
+    playerAttack = 50;
     playerMoney = 100;
     for (var i=0; i < enemyName.length; i++) {
         if (playerHealth > 0) {
-            window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
+            var currentRound = i + 1
+            window.alert("Welcome to Robot Gladiators! Round " + currentRound);
             var currentEnemy = enemyName[i];
-            enemyHealth = 20
+            enemyHealth = randomNumber(40, 60);
             fight(currentEnemy);
             // ask the player to shop in between eachround (if there are still more enemies to fight)
             if (playerHealth > 0 && i < enemyName.length -1) {
-                var storeConfirm = window.confirm("Round 1 is over. Would you like to visit the store before the next round?");
+                var storeConfirm = window.confirm("Round " + currentRound + " is over. Would you like to visit the store before the next round?");
                 if (storeConfirm) {
                     shop();
                 }
@@ -138,8 +141,14 @@ var shop = function() {
     }
 };
 
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+    return value;
+};
+
 startGame();
 
 // change enemy health to 50
 // change player health to 100
-// change player money to 10
+// change player money to 50
+// change player attack to 10
