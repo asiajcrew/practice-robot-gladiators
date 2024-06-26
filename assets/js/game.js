@@ -178,8 +178,3 @@ var shop = function() {
 };
 
 startGame();
-
-// change enemy health to 50
-// change player health to 100
-// change player money to 50
-// change player attack to 10
