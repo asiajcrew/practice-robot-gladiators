@@ -2,7 +2,6 @@
 var fight = function(enemy) {
     while(player.health > 0 && enemy.health > 0) {
         var promptFight = window.prompt("Would you like to FIGHT or SKIP this round? Enter 'FIGHT' or 'SKIP' to choose.");
-        console.log(promptFight);
     
         // SKIP
         if (promptFight === "skip" || promptFight === "SKIP") {
@@ -55,9 +54,17 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+var getPlayerName = function() {
+    var name = "";
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?")
+    }
+    return name;
+}
+
 // Player info
 var player = {
-    name: window.prompt("What's your robot name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
