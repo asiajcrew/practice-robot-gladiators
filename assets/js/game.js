@@ -61,12 +61,12 @@ var getPlayerName = function() {
 // Player info
 var player = {
     name: getPlayerName(),
-    health: 100,
+    health: 20,
     attack: 10,
     money: 10,
     reset: function() {
-        this.health = 100;
-        this.money = 10;
+        this.health = 20;
+        this.money = 20;
         this.attack = 10;
     },
     // refill health for shop function
@@ -117,7 +117,7 @@ var startGame = function() {
             var currentRound = i + 1
             window.alert("Welcome to Robot Gladiators! Round " + currentRound);
             var currentEnemyObj = enemy[i];
-            currentEnemyObj.health = randomNumber(40, 60);
+            currentEnemyObj.health = randomNumber(10, 20);
             fight(currentEnemyObj);
             // ask the player to shop in between eachround (if there are still more enemies to fight)
             if (player.health > 0 && i < enemy.length -1) {
@@ -185,13 +185,20 @@ var shop = function() {
 
 // function to end the entire game
 var endGame = function() {  
-    // if player is still alive, player wins!
-    if (player.health > 0) {
-      window.alert("Great job, you've survived the game! You now have a score of " + player.money + ".");
-    } 
-    else {
-      window.alert("Thanks for playing.");
+    window.alert("The game has now ended let's see how you did.")
+    var highScore= localStorage.getItem("highscore");
+    if (highScore === null) {
+        highScore = 0;
     }
+
+    if (player.money > highScore) {
+        localStorage.setItem("name", player.name);
+        localStorage.setItem("highscore", player.money);
+        window.alert(player.name + " now has the high score of " + player.money + "!");
+    } else {
+        window.alert(player.name + " survived with a score of " + player.money + " but did not beat the high score of " + highScore + ". Maybe next time. Thanks for playing");
+    }
+
 
     // ask player if they'd like to play again
     var playAgainConfirm = window.confirm("Would you like to play again?");
@@ -204,3 +211,6 @@ var endGame = function() {
 };
 
 startGame();
+
+// change line 120 to 40, 60
+// change line 64 & 68 to 100
