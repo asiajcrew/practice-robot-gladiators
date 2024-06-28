@@ -1,10 +1,15 @@
 // Defined fight function
 var fight = function(enemy) {
-    while(player.health > 0 && enemy.health > 0) {
-        if (fightOrSkip()) {
-            break;
-        };
+    var isPlayerTurn = true;
+        if (Math.random() > 0.5) {
+            isPlayerTurn = false;
+        }
 
+    while(player.health > 0 && enemy.health > 0) {
+        if (isPlayerTurn) {
+            if (fightOrSkip()) {
+                break;
+            };
         var damage = randomNumber(player.attack - 3, player.attack);
         enemy.health = Math.max(0, enemy.health - damage)
         console.log(player.name + " attacked " + enemy.name + "." + enemy.name + " now has " + enemy.health + " health remaining.");
@@ -18,20 +23,23 @@ var fight = function(enemy) {
             else {
                 window.alert(enemy.name + " still has " + enemy.health + " health left.");
             };
-
-        // Enemy attack
-        var damage = randomNumber(enemy.attack -3, enemy.attack);
-        player.health = Math.max(0, player.health - damage);
-        console.log(enemy.name + " attacked " + player.name + "." + player.name + " now has " + player.health + " health remaining.");
-        
-            // Check player health
-            if (player.health <= 0) {
-                window.alert("Game over for " + player.name);
-                break;
-            }
-            else {
-                window.alert(player.name + " still has " + player.health + " health remaining");
-            }
+        } else {
+            // Enemy attack
+            var damage = randomNumber(enemy.attack -3, enemy.attack);
+            player.health = Math.max(0, player.health - damage);
+            console.log(enemy.name + " attacked " + player.name + "." + player.name + " now has " + player.health + " health remaining.");
+            
+                // Check player health
+                if (player.health <= 0) {
+                    window.alert("Game over for " + player.name);
+                    break;
+                }
+                else {
+                    window.alert(player.name + " still has " + player.health + " health remaining");
+                }
+        }
+        // Reverses order so that it is the opposite person's turn after initial attack
+        isPlayerTurn = !isPlayerTurn
     }
 }
 
