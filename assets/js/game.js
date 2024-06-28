@@ -1,22 +1,9 @@
 // Defined fight function
 var fight = function(enemy) {
     while(player.health > 0 && enemy.health > 0) {
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this round? Enter 'FIGHT' or 'SKIP' to choose.");
-    
-        // SKIP
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-                if (confirmSkip) {
-                    if (player.money >= 10) {
-                        window.alert(player.name + " has chosen to skip the fight.");
-                        player.money = player.money - 10;
-                        console.log("player money ", player.money)
-                        break;
-                    } else {
-                        window.alert("You do not have enough money to skip this round")
-                    }
-                }
-        }
+        if (fightOrSkip()) {
+            break;
+        };
 
         var damage = randomNumber(player.attack - 3, player.attack);
         enemy.health = Math.max(0, enemy.health - damage)
@@ -30,7 +17,7 @@ var fight = function(enemy) {
             }
             else {
                 window.alert(enemy.name + " still has " + enemy.health + " health left.");
-            }
+            };
 
         // Enemy attack
         var damage = randomNumber(enemy.attack -3, enemy.attack);
@@ -54,6 +41,7 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+// return player's robot name. Used in Player info object
 var getPlayerName = function() {
     var name = "";
     while (name === "" || name === null) {
@@ -138,24 +126,29 @@ var startGame = function() {
     endGame();
 };
 
-// function to end the entire game
-var endGame = function() {  
-    // if player is still alive, player wins!
-    if (player.health > 0) {
-      window.alert("Great job, you've survived the game! You now have a score of " + player.money + ".");
-    } 
-    else {
-      window.alert("Thanks for playing.");
+// Confirmation to fight or skip round
+var fightOrSkip = function () {
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this round? Enter 'FIGHT' or 'SKIP' to choose.");
+    promptFight = promptFight.toLowerCase();
+    if (!promptFight) {
+        // ^^Can also be written as "if (promptFight === "" || promptFight === null)
+        window.alert("Please input a valid answer. Try again");
+        return fightOrSkip();
+    } else if (promptFight === "skip") {
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+            if (confirmSkip) {
+                if (player.money >= 10) {
+                    window.alert(player.name + " has chosen to skip the fight.");
+                    player.money = player.money - 10;
+                    return true;
+                    shop();
+                } else {
+                    window.alert("You do not have enough money to skip this round")
+                }
+            } else {
+                return false;
+            }
     }
-
-    // ask player if they'd like to play again
-    var playAgainConfirm = window.confirm("Would you like to play again?");
-        if (playAgainConfirm) {
-        // restart the game
-        startGame();
-        } else {
-        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-        }
 };
 
 // shop options
@@ -182,6 +175,26 @@ var shop = function() {
             shop();
             break;
     }
+};
+
+// function to end the entire game
+var endGame = function() {  
+    // if player is still alive, player wins!
+    if (player.health > 0) {
+      window.alert("Great job, you've survived the game! You now have a score of " + player.money + ".");
+    } 
+    else {
+      window.alert("Thanks for playing.");
+    }
+
+    // ask player if they'd like to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+        if (playAgainConfirm) {
+        // restart the game
+        startGame();
+        } else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+        }
 };
 
 startGame();
